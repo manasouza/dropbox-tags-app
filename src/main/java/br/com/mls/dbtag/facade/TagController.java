@@ -20,7 +20,6 @@ import br.com.mls.dbtag.dto.TagRequest;
 import br.com.mls.dbtag.dto.TagResponse;
 import br.com.mls.dbtag.model.Tag;
 import br.com.mls.dbtag.service.TagService;
-import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -33,9 +32,6 @@ import java.util.Optional;
 
 @RestController
 public class TagController {
-
-    @Value("${welcome}")
-    private String welcome;
 
     @Autowired
     private TagService tagService;
