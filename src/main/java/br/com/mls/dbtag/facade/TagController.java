@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -74,7 +75,10 @@ public class TagController {
     }
 
     @ExceptionHandler({NullPointerException.class})
-    void handleIllegalArgumentException(HttpServletResponse response) throws IOException {
-        response.sendError(HttpStatus.BAD_REQUEST.value(), "Evaluate your request body");
+    void handleIllegalArgumentException(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if ("POST".equals(request.getMethod())) {
+            response.sendError(HttpStatus.BAD_REQUEST.value(), "Evaluate your request body");
+        }
+        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 }

@@ -1,8 +1,10 @@
 package br.com.mls.dbtag.service;
 
 import br.com.mls.dbtag.model.Tag;
+import br.com.mls.dbtag.repository.TagRepository;
 import br.com.mls.dbtag.service.exception.TagNotFoundException;
 import com.google.common.collect.Lists;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,30 +16,29 @@ import java.util.Objects;
 @Service
 public class TagService {
 
-    private List<Tag> tagList = Lists.newArrayList();
+    @Autowired
+    private TagRepository tagRepository;
 
     public List<Tag> getTags(String s, String s1) {
+        List<Tag> tagList = Lists.newArrayList();
+        tagRepository.findAll().forEach(t -> tagList.add(t));
         return tagList;
     }
 
     public void createTags(List<Tag> tags) {
-        tagList.addAll(tags);
+        tagRepository.save(tags);
     }
 
     public void removeTags(Tag tag) {
-        boolean removed = tagList.remove(tag);
-        if (!removed) {
-            throw new TagNotFoundException(tag.getName());
-        }
+        tagRepository.delete(tag);
     }
 
     public Tag getTagByName(String name) throws TagNotFoundException {
         Objects.nonNull(name);
-        for (Tag tag : tagList) {
-            if (name.equals(tag.getName())) {
-                return tag;
-            }
+        Tag tag = tagRepository.findByName(name);
+        if (tag == null) {
+            throw new TagNotFoundException(name);
         }
-        throw new TagNotFoundException(name);
+        return tag;
     }
 }
