@@ -3,6 +3,8 @@ package br.com.mls.dbtag.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Created by manasses on 2/8/17.
  */
@@ -11,5 +13,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class TagResponse {
 
-    private TagDTO tag;
+    private List<TagDTO> tags;
 }

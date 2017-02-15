@@ -37,9 +37,6 @@ public class AppConfig {
     @Value("${solr.path}")
     private String solrPath;
 
-    @Value("${dropbox.key}")
-    private String dropboxKey;
-
     @PostConstruct
     public void init() {
         solrBaseUri = String.format("%s://%s:%s/%s", solrProtocol, solrHost, solrPort, solrPath);

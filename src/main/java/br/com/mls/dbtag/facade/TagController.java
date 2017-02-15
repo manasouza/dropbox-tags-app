@@ -18,10 +18,11 @@ package br.com.mls.dbtag.facade;
 import br.com.mls.dbtag.dto.TagDTO;
 import br.com.mls.dbtag.dto.TagRequest;
 import br.com.mls.dbtag.dto.TagResponse;
+import br.com.mls.dbtag.model.DropboxTag;
 import br.com.mls.dbtag.model.Tag;
+import br.com.mls.dbtag.service.DropboxTagService;
 import br.com.mls.dbtag.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,9 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
+    @Autowired
+    private DropboxTagService dropboxTagService;
+
     @RequestMapping(value = "/tags", method = RequestMethod.GET)
     public List<TagDTO> getTags(@RequestParam Optional<String> commaSeparatedTags, @RequestParam Optional<String> searchCriteria) {
         String tags = null;
@@ -47,6 +51,7 @@ public class TagController {
         if (searchCriteria.isPresent()) {
             criteria = searchCriteria.get();
         }
+        dropboxTagService.getTaggedFiles(tags, criteria);
         List<Tag> tagsList = tagService.getTags(tags, criteria);
         List<TagDTO> tagsDTO = ModelMapper.toFacade(tagsList);
         return tagsDTO;
@@ -62,10 +67,10 @@ public class TagController {
     @RequestMapping(value = "/tags", method = RequestMethod.POST, consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public TagResponse createTags(@RequestBody TagRequest request) {
-        List<Tag> tags = ModelMapper.toModel(request.getTags());
-        tagService.createTags(tags);
+        List<DropboxTag> tags = ModelMapper.toModel(request.getTags());
+        List<DropboxTag> savedTags = tagService.createTags(tags);
         // TODO: design response for post: could have other data like date and ID
-        return new TagResponse(new TagDTO("name"));
+        return new TagResponse(ModelMapper.toFacade(savedTags));
     }
 
     @RequestMapping(value = "/tags/{name}", method = RequestMethod.DELETE)
@@ -78,7 +83,9 @@ public class TagController {
     void handleIllegalArgumentException(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if ("POST".equals(request.getMethod())) {
             response.sendError(HttpStatus.BAD_REQUEST.value(), "Evaluate your request body");
+        } else {
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
-        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
+
 }

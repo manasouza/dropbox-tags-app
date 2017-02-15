@@ -1,8 +1,6 @@
 package br.com.mls.dbtag.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -12,6 +10,5 @@ import java.util.List;
 @Getter
 public class TagRequest {
 
-    @JsonProperty
     private List<TagDTO> tags;
 }

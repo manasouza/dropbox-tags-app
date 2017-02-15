@@ -10,5 +10,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class TagDTO {
 
+    private String id;
     private String name;
+    private String dropboxFile;
+    private String createdDate;
 }
