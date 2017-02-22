@@ -1,6 +1,5 @@
 package br.com.mls.dbtag.service;
 
-import br.com.mls.dbtag.model.DropboxFile;
 import br.com.mls.dbtag.model.DropboxTag;
 import br.com.mls.dbtag.model.Tag;
 import br.com.mls.dbtag.repository.DropboxTagRepository;
@@ -50,7 +49,7 @@ public class TagService {
                 log.error(e.getMessage(), e);
                 throw new DropboxIntegrationException();
             }
-            savedTags.add(dropboxTagRepository.save(dropboxTag));
+            savedTags.add(ModelMapper.toModel(dropboxTagRepository.save(ModelMapper.toEntity(dropboxTag))));
         }
         return savedTags;
     }

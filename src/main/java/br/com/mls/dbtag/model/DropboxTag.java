@@ -3,6 +3,7 @@ package br.com.mls.dbtag.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.solr.client.solrj.beans.Field;
 
 /**
  * Created by manasses on 2/13/17.
@@ -12,14 +13,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DropboxTag {
 
-    private String id;
-
+    @Field
     private Tag tag;
 
+    @Field
     private DropboxFile file;
 
-    public DropboxTag(Tag tag, DropboxFile dropboxFile) {
-        this.tag = tag;
-        this.file = dropboxFile;
+    public DropboxTag(String tagName, String fileName) {
+        this.tag = new Tag(tagName);
+        this.file = new DropboxFile(fileName);
     }
 }

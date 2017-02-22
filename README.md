@@ -59,7 +59,8 @@ The URL `http://spring-boot-webmvc-default.vagrant.f8/ip` can be used to obtain 
 when running with multiple pods.
 
 
-### More details
+### DropBox App Console
+https://www.dropbox.com/developers/apps/info/c7a9hs4i0esklxl
 
-You can find more details about running this [quickstart](http://fabric8.io/guide/quickstarts/running.html) on the website. This also includes instructions how to change the Docker image user and registry.
+
 
